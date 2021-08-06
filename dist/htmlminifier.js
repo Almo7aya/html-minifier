@@ -1,6 +1,6 @@
 /*!
  * HTMLMinifier v4.0.0 (https://kangax.github.io/html-minifier/)
- * Copyright 2010-2019 Juriy "kangax" Zaytsev
+ * Copyright 2010-2021 Juriy "kangax" Zaytsev
  * Licensed under the MIT license
  */
 
@@ -25351,6 +25351,12 @@ function canDeleteEmptyAttribute(tag, attrName, attrValue, options) {
   return tag === 'input' && attrName === 'value' || reEmptyAttribute.test(attrName);
 }
 
+function canDeleteCustomAttribute(attrName, options) {
+  if (typeof options.removeCustomAttributes === 'function') {
+    return options.removeCustomAttributes(attrName);
+  }
+}
+
 function hasAttrName(name, attrs) {
   for (var i = attrs.length - 1; i >= 0; i--) {
     if (attrs[i].name === name) {
@@ -25421,6 +25427,11 @@ function normalizeAttr(attr, attrs, tag, options) {
 
   if (options.removeEmptyAttributes &&
       canDeleteEmptyAttribute(tag, attrName, attrValue, options)) {
+    return;
+  }
+
+  if (options.removeCustomAttributes &&
+      canDeleteCustomAttribute(attrName, options)) {
     return;
   }
 

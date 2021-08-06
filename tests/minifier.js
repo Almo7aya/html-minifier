@@ -906,6 +906,17 @@ QUnit.test('empty attributes', function(assert) {
   assert.equal(minify(input, { removeEmptyAttributes: function(attrName, tag) { return tag === 'img' && attrName === 'src'; } }), '<img alt="">');
 });
 
+QUnit.test('custom attributes', function(assert) {
+  var input;
+
+  input = '<p ng-id="t" ng-class="123" ng-STYLE=" " ng-title="\n" lang="ar" ng-dir="rtl" >x</p>';
+  assert.equal(minify(input, {
+    removeCustomAttributes: function(attrName) {
+      return /ng-/.test(attrName);
+    }
+  }), '<p lang="ar">x</p>');
+});
+
 QUnit.test('cleaning class/style attributes', function(assert) {
   var input, output;
 

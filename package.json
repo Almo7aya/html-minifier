@@ -1,5 +1,5 @@
 {
-  "name": "html-minifier",
+  "name": "html-minifier-with-remove-custom-attrs",
   "description": "Highly configurable, well-tested, JavaScript-based HTML minifier.",
   "version": "4.0.0",
   "keywords": [
