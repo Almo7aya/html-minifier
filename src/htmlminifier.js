@@ -5,7 +5,6 @@ var decode = require('he').decode;
 var HTMLParser = require('./htmlparser').HTMLParser;
 var RelateUrl = require('relateurl');
 var TokenChain = require('./tokenchain');
-var UglifyJS = require('uglify-js');
 var utils = require('./utils');
 
 function trimWhitespace(str) {
@@ -695,26 +694,6 @@ function processOptions(values) {
           return text;
         }
         return unwrapCSS(cleanCssOutput.styles, type);
-      };
-    }
-    else if (key === 'minifyJS' && typeof value !== 'function') {
-      if (!value) {
-        return;
-      }
-      if (typeof value !== 'object') {
-        value = {};
-      }
-      (value.parse || (value.parse = {})).bare_returns = false;
-      options.minifyJS = function(text, inline) {
-        var start = text.match(/^\s*<!--.*/);
-        var code = start ? text.slice(start[0].length).replace(/\n\s*-->\s*$/, '') : text;
-        value.parse.bare_returns = inline;
-        var result = UglifyJS.minify(code, value);
-        if (result.error) {
-          options.log(result.error);
-          return text;
-        }
-        return result.code.replace(/;$/, '');
       };
     }
     else if (key === 'minifyURLs' && typeof value !== 'function') {
